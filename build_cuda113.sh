@@ -42,34 +42,34 @@ echo "Available parameters:
         --create-conda-env"
 
 highlight "Installing system-wise packages ..."
-sudo apt-get update > /dev/null 2>&1 &&
-sudo apt -y install gcc-8 g++-8 # gcc-8 is a safe version 
-sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-8 8
-sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-8 8
-sudo apt-get install -y cmake
-sudo apt-get install -y \
-  libglew-dev \
-  libgtk2.0-dev \
-  pkg-config \
-  libegl1-mesa-dev \
-  libwayland-dev \
-  libxkbcommon-dev \
-  wayland-protocols
+# sudo apt-get update > /dev/null 2>&1 &&
+# sudo apt -y install gcc-8 g++-8 # gcc-8 is a safe version 
+# sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-8 8
+# sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-8 8
+# sudo apt-get install -y cmake
+# sudo apt-get install -y \
+#   libglew-dev \
+#   libgtk2.0-dev \
+#   pkg-config \
+#   libegl1-mesa-dev \
+#   libwayland-dev \
+#   libxkbcommon-dev \
+#   wayland-protocols
 
 # install CUDA 11.3
-if [[ $* == *--install-cuda* ]] ; then
-  highlight "Installing CUDA..."
-  wget https://developer.download.nvidia.com/compute/cuda/11.3.0/local_installers/cuda_11.3.0_465.19.01_linux.run
-  sudo sh cuda_11.3.0_465.19.01_linux.run
-  rm cuda_11.3.0_465.19.01_linux.run
-fi # --install-cuda
+# if [[ $* == *--install-cuda* ]] ; then
+#   highlight "Installing CUDA..."
+#   wget https://developer.download.nvidia.com/compute/cuda/11.3.0/local_installers/cuda_11.3.0_465.19.01_linux.run
+#   sudo sh cuda_11.3.0_465.19.01_linux.run
+#   rm cuda_11.3.0_465.19.01_linux.run
+# fi # --install-cuda
 export PATH=/usr/local/cuda-11.3/bin:$PATH
 export LD_LIBRARY_PATH=/usr/local/cuda-11.3/lib64:$LD_LIBRARY_PATH
 
 if [[ $* == *--build-dependencies* ]]; then
   highlight "Installing OpenCV ..."
   cd Thirdparty
-  git_clone "git clone --branch 3.4.1 --depth=1 https://github.com/opencv/opencv.git"
+  # git_clone "git clone --branch 3.4.1 --depth=1 https://github.com/opencv/opencv.git"
   cd opencv
   if [ ! -d build ]; then
     mkdir build
@@ -110,13 +110,14 @@ if [[ $* == *--build-dependencies* ]]; then
       -DWITH_TIFF=OFF  \
       -DWITH_VTK=OFF  \
       -DWITH_WEBP=OFF  \
+      -D BUILD_TIFF=ON \
       ..
   make -j8
   OpenCV_DIR=$(pwd)
   cd ../..
 
   highlight "Installing Eigen3 ..."
-  git_clone "git clone --branch=3.4.0 --depth=1 https://gitlab.com/libeigen/eigen.git"
+  # git_clone "git clone --branch=3.4.0 --depth=1 https://gitlab.com/libeigen/eigen.git"
   cd eigen
   if [ ! -d build ]; then
     mkdir build
@@ -131,7 +132,7 @@ if [[ $* == *--build-dependencies* ]]; then
   cd ../..
 
   highlight "Installing Pangolin ..."
-  git_clone "git clone --recursive --depth=1 https://github.com/stevenlovegrove/Pangolin.git"
+  # git_clone "git clone --recursive --depth=1 https://github.com/stevenlovegrove/Pangolin.git"
   cd Pangolin
   if [ ! -d build ]; then
     mkdir build
@@ -163,10 +164,10 @@ highlight "Installing g2o ..."
   cd ../../..
 fi # --build-dependencies
 
-if [[ $* == *--create-conda-env* ]] ; then
-  highlight "Creating Python environment ..."
-  conda env create -f environment_cuda113.yml
-fi # --create-conda-env
+# if [[ $* == *--create-conda-env* ]] ; then
+#   highlight "Creating Python environment ..."
+#   conda env create -f environment_cuda113.yml
+# fi # --create-conda-env
 
 conda_base=$(conda info --base)
 source "$conda_base/etc/profile.d/conda.sh"
